@@ -1,5 +1,14 @@
-import { move, moveEast, moveNorth, moveSouth, moveWest } from '../src/index';
+import {
+	move,
+	moveEast,
+	moveNorth,
+	moveSouth,
+	moveWest,
+	turnLeft,
+	turnRight,
+} from '../src/index';
 import { Robot } from '../src/types';
+import {pipe } from 'ramda';
 
 describe("Test Robot's movement", () => {
 	let robot: Robot;
@@ -33,7 +42,7 @@ describe("Test Robot's movement", () => {
 	});
 });
 
-describe('When the robot is facing north', () => {
+describe('When the robot is facing North', () => {
 	let robot: Robot;
 
 	beforeEach(() => {
@@ -45,6 +54,20 @@ describe('When the robot is facing north', () => {
 		expect(result.north).toBe(robot.north + 1);
 		expect(result.east).toBe(robot.east);
 		expect(result.facing).toBe(robot.facing);
+	});
+
+	test('Robot can turn left to face West', () => {
+		let result = turnLeft(robot);
+		expect(result.facing).toBe('West');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
+
+	test('Robot can turn right to face East', () => {
+		let result = turnRight(robot);
+		expect(result.facing).toBe('East');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
 	});
 });
 
@@ -61,6 +84,20 @@ describe('When the robot is facing South', () => {
 		expect(result.east).toBe(robot.east);
 		expect(result.facing).toBe(robot.facing);
 	});
+
+	test('Robot can turn left to face East', () => {
+		let result = turnLeft(robot);
+		expect(result.facing).toBe('East');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
+
+	test('Robot can turn right to face West', () => {
+		let result = turnRight(robot);
+		expect(result.facing).toBe('West');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
 });
 
 describe('When the robot is facing East', () => {
@@ -75,6 +112,20 @@ describe('When the robot is facing East', () => {
 		expect(result.north).toBe(robot.north);
 		expect(result.east).toBe(robot.east + 1);
 		expect(result.facing).toBe(robot.facing);
+	});
+
+	test('Robot can turn left to face North', () => {
+		let result = turnLeft(robot);
+		expect(result.facing).toBe('North');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
+
+	test('Robot can turn right to face South', () => {
+		let result = turnRight(robot);
+		expect(result.facing).toBe('South');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
 	});
 });
 
@@ -91,4 +142,35 @@ describe('When the robot is facing West', () => {
 		expect(result.east).toBe(robot.east - 1);
 		expect(result.facing).toBe(robot.facing);
 	});
+
+	test('Robot can turn left to face South', () => {
+		let result = turnLeft(robot);
+		expect(result.facing).toBe('South');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
+
+	test('Robot can turn right to face North', () => {
+		let result = turnRight(robot);
+		expect(result.facing).toBe('North');
+		expect(result.north).toBe(robot.north);
+		expect(result.east).toBe(robot.east);
+	});
 });
+
+describe('Test multiple movements and direction changes simultaneously', () => {
+	let robot: Robot;
+
+	beforeEach(() => {
+		robot = {east: 0, north: 0, facing: 'North'};
+	});
+
+	test('Robot moves and changes direction multiple times and ends up in the correct position', () => {
+		let movement = pipe(move, turnRight, move, turnLeft, move, turnLeft, move);
+		let result = movement(robot);
+
+		expect(result.north).toBe(2);
+		expect(result.east).toBe(0);
+		expect(result.facing).toBe('West');
+	})
+})
