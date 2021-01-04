@@ -7,7 +7,7 @@
     "start": "ts-node src/index.ts",
     "watch": "tsc -w",
     "dev": "node dist/index.js",
-    "test": "npx jest"
+    "test": "npx jest --watch"
   },
   "author": "",
   "license": "ISC",

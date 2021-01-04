@@ -6,9 +6,9 @@ import {
 	moveWest,
 	turnLeft,
 	turnRight,
-} from '../src/index';
+} from '../src/movement';
 import { Robot } from '../src/types';
-import {pipe } from 'ramda';
+import { pipe } from 'ramda';
 
 describe("Test Robot's movement", () => {
 	let robot: Robot;
@@ -162,7 +162,7 @@ describe('Test multiple movements and direction changes simultaneously', () => {
 	let robot: Robot;
 
 	beforeEach(() => {
-		robot = {east: 0, north: 0, facing: 'North'};
+		robot = { east: 0, north: 0, facing: 'North' };
 	});
 
 	test('Robot moves and changes direction multiple times and ends up in the correct position', () => {
@@ -172,5 +172,5 @@ describe('Test multiple movements and direction changes simultaneously', () => {
 		expect(result.north).toBe(2);
 		expect(result.east).toBe(0);
 		expect(result.facing).toBe('West');
-	})
-})
+	});
+});
